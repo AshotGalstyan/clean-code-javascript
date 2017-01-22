@@ -101,7 +101,10 @@ setTimeout(blastOff, MILLISECONDS_IN_A_DAY);
 ```javascript
 const address = 'One Infinite Loop, Cupertino 95014';
 const cityZipCodeRegex = /^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/;
-saveCityZipCode(address.match(cityZipCodeRegex)[1], address.match(cityZipCodeRegex)[2]);
+saveCityZipCode(
+  address.match(cityZipCodeRegex)[1],
+  address.match(cityZipCodeRegex)[2]
+);
 ```
 
 **Good:**
@@ -469,7 +472,8 @@ function createMenu(config) {
   config.title = config.title || 'Foo';
   config.body = config.body || 'Bar';
   config.buttonText = config.buttonText || 'Baz';
-  config.cancellable = config.cancellable === undefined ? config.cancellable : true;
+  const cancellable = config.cancellable;
+  config.cancellable = cancellable === undefined ? cancellable : true;
 }
 
 createMenu(menuConfig);
@@ -492,7 +496,8 @@ function createMenu(config) {
     cancellable: true
   }, config);
 
-  // config now equals: {title: "Order", body: "Bar", buttonText: "Send", cancellable: true}
+  // config now equals:
+  // { title: "Order", body: "Bar", buttonText: "Send", cancellable: true }
   // ...
 }
 
@@ -1340,7 +1345,8 @@ class DOMTraverser {
 
 const $ = new DOMTraverser({
   rootNode: document.getElementsByTagName('body'),
-  animationModule() {} // Most of the time, we won't need to animate when traversing.
+  // Most of the time, we won't need to animate when traversing
+  animationModule() {}
   // ...
 });
 
@@ -1662,7 +1668,8 @@ class Employee {
   // ...
 }
 
-// Bad because Employees "have" tax data. EmployeeTaxData is not a type of Employee
+// Bad because Employees "have" tax data.
+// EmployeeTaxData is not a type of Employee
 class EmployeeTaxData extends Employee {
   constructor(ssn, salary) {
     super();
@@ -1777,7 +1784,9 @@ Promises are a built-in global type. Use them!
 const request = require('request');
 const fs = require('fs');
 
-request.get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin', (requestErr, response) => {
+const url = 'https://en.wikipedia.org/wiki/Robert_Cecil_Martin';
+
+request.get(url, (requestErr, response) => {
   if (requestErr) {
     console.error(requestErr);
   } else {
@@ -1798,7 +1807,9 @@ request.get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin', (requestErr, re
 const requestPromise = require('request-promise');
 const fsPromise = require('fs-promise');
 
-requestPromise.get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
+const url = 'https://en.wikipedia.org/wiki/Robert_Cecil_Martin';
+
+requestPromise.get(url)
   .then((response) => {
     return fsPromise.writeFile('article.html', response);
   })
@@ -1824,7 +1835,9 @@ today!
 const requestPromise = require('request-promise');
 const fsPromise = require('fs-promise');
 
-requestPromise.get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin')
+const url = 'https://en.wikipedia.org/wiki/Robert_Cecil_Martin';
+
+requestPromise.get(url)
   .then((response) => {
     return fsPromise.writeFile('article.html', response);
   })
@@ -1844,7 +1857,8 @@ const fsPromise = require('fs-promise');
 
 async function getCleanCodeArticle() {
   try {
-    const response = await requestPromise.get('https://en.wikipedia.org/wiki/Robert_Cecil_Martin');
+    const url = 'https://en.wikipedia.org/wiki/Robert_Cecil_Martin';
+    const response = await requestPromise.get(url);
     await fsPromise.writeFile('article.html', response);
     console.log('File written');
   } catch(err) {
